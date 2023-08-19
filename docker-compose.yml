@@ -1,7 +1,6 @@
 version: "3.7"
 
 services:
-    # image project
     app:
         build:
             context: .
@@ -10,8 +9,6 @@ services:
         working_dir: /var/www/
         volumes:
             - ./:/var/www
-        depends_on:
-            - redis
         networks:
             - laravel
 
@@ -20,7 +17,7 @@ services:
         image: nginx:alpine
         restart: unless-stopped
         ports:
-            - "8989:80"
+            - "8080:80"
         volumes:
             - ./:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
@@ -42,25 +39,14 @@ services:
             - "3388:3306"
         networks:
             - laravel
-
-    # queue
-    queue:
-        image: especializati/laravel9-app
-        restart: unless-stopped
-        command: "php artisan queue:work"
-        volumes:
-            - ./:/var/www
-        depends_on:
-            - redis
-            - app
-        networks:
-            - laravel
-
-    # redis
-    redis:
-        image: redis:latest
-        networks:
-            - laravel
+        deploy:
+            resources:
+                limits:
+                    cpus: '1'
+                    memory: 1024M
+                reservations:
+                    cpus: '0.2'
+                    memory: 1024M
 
 networks:
     laravel:
