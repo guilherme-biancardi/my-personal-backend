@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('brand');
             $table->string('model');
             $table->integer('storage');
+            $table->enum('storage_unity', ['GB', 'TB']);
             $table->integer('quantity')->default(0);
             $table->timestamps();
         });

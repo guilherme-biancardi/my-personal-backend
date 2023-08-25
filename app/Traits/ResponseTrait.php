@@ -11,6 +11,6 @@ trait ResponseTrait
 
     public function setResponseWithResource($resource, $message, $status = 200)
     {
-        return response()->json([$resource, 'message' => $message], $status);
+        return response()->json(['data' => $resource, 'message' => $message], $status);
     }
 }

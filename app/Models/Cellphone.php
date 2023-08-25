@@ -13,6 +13,7 @@ class Cellphone extends Model
         'brand',
         'model',
         'storage',
+        'storage_unity',
         'quantity'
     ];
 }
