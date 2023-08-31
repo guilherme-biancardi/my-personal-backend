@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Resources\UserResource;
 use App\Jobs\UserActivationLink;
 use App\Models\User;
 use App\Traits\ResponseTrait;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -47,12 +48,40 @@ class AuthController extends Controller
 
         dispatch(new UserActivationLink($user));
 
-        return $this->setResponse(__('messages.auth.created'), 201);
+        return $this->setResponse(__('messages.auth.created'));
     }
 
     public function logout(Request $request)
     {
         Auth::logout($request->bearerToken());
         return $this->setResponse(__('messages.auth.logged_out'));
+    }
+
+    public function resetPassword(Request $request)
+    {
+        try {
+            $request->validate([
+                'token' => 'required',
+                'email' => 'required|email',
+                'password' => 'required|min:6|confirmed',
+            ]);
+        } catch (ValidationException $th) {
+            return response()->json($th->validator->errors(), 400);
+        }
+
+        $status = Password::reset(
+            $reset = $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) use ($reset) {
+                $user->fill([
+                    'password' => $password
+                ])->setRememberToken(Str::random(60));
+                $user->save();
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status == Password::PASSWORD_RESET
+            ? $this->setResponse(__('messages.auth.reset_password.success'))
+            : $this->setResponse(__('messages.auth.reset_password.failure'), 400);
     }
 }

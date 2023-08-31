@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\UserRecoverPasswordLink;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -98,5 +100,13 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+
+        $url = env('VITE_FRONT_END_URL') . '/reset-password/' . $token;
+
+        $this->notify(new UserRecoverPasswordLink($url));
     }
 }

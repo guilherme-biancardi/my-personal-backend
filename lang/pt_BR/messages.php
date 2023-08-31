@@ -9,6 +9,10 @@ return [
         'logged_in' => 'Usuário logado com sucesso!',
         'logged_out' => 'Usuário deslogado com sucesso!',
         'created' => 'Usuário criado com sucesso!',
+        'reset_password' => [
+            'success' => 'Senha alterada com sucesso!',
+            'failure' => 'Não foi possível alterar sua senha'
+        ]
     ],
 
     'user' => [
