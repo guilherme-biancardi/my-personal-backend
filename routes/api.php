@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('/user')->group(function () {
     Route::get('/activate/{hash}', [UserController::class, 'activate'])->name('user.activate');
     Route::post('/send-activation-link', [UserController::class, 'sendActivationLink']);
+    Route::post('/forgot-password', [UserController::class, 'forgotPassword']);
     Route::get('/me', [UserController::class, 'me'])->middleware('jwt.verify');
 });
 
@@ -31,6 +32,7 @@ Route::prefix('/auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.verify');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
 // Route::middleware('jwt.verify')->group(function () {
