@@ -39,14 +39,12 @@ class UserActivationLink extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): Mailable
+    public function toMail(object $notifiable)
     {
-        return (new Mailable)->to(env('MAIL_USERNAME'))
-            ->subject('Nova acesso solicitado!')
-            ->view('userVerification', [
-                'url' => $this->url,
-                'user' => $this->user
-            ]);
+        return (new MailMessage)
+            ->line('Aqui está seu link para ativar sua conta')
+            ->action('Clique aqui para ativar sua conta', $this->url)
+            ->line('Obrigado por usar nossa aplicação!');
     }
 
     /**

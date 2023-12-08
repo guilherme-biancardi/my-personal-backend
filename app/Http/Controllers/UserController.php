@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Jobs\UserActivationLink;
-use App\Jobs\UserRecoverPasswordLink;
 use App\Models\User;
-use App\Traits\ResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-
-    use ResponseTrait;
 
     public function me(Request $request)
     {
