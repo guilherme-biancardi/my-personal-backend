@@ -4,6 +4,7 @@
 
 return [
     'auth' => [
+        'not_credentials' => 'E-mail e/ou senha inválidos',
         'not_authorized' => 'Usuário não autorizado',
         'not_activated' => 'Usuário não ativado, fale com seu administrador e tente novamente',
         'logged_in' => 'Usuário logado com sucesso!',

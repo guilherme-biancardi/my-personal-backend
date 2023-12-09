@@ -22,7 +22,7 @@ class AuthController extends Controller
         $token = Auth::attempt($credentials);
 
         if (!$token) {
-            return $this->setResponse(__('messages.auth.not_authorized'), 401);
+            return $this->setResponse(__('messages.auth.not_credentials'), 401);
         }
 
         if (Auth::user()->isWaitingForActivation()) {
