@@ -112,7 +112,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
 
-        $url = env('VITE_FRONT_END_URL') . '/reset-password/' . $token;
+        $url = env('VITE_FRONT_END_URL') . '/login/reset-password/' . $token;
 
         $this->notify(new UserRecoverPasswordLink($url));
     }
