@@ -6,7 +6,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Jobs\UserActivationLink;
 use App\Models\User;
-use App\Traits\ResponseTrait;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,16 +16,13 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-
-    use ResponseTrait;
-
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
         $token = Auth::attempt($credentials);
 
         if (!$token) {
-            return $this->setResponse(__('messages.auth.not_authorized'), 401);
+            return $this->setResponse(__('messages.auth.not_credentials'), 401);
         }
 
         if (Auth::user()->isWaitingForActivation()) {
@@ -41,14 +37,18 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $userRequest = $request->validated();
-        $userRequest['remember_token'] = Str::random(60);
+        if (Auth::user()->isOwner()) {
+            $userRequest = $request->validated();
+            $userRequest['remember_token'] = Str::random(60);
 
-        $user = User::create($userRequest);
+            $user = User::create($userRequest);
 
-        dispatch(new UserActivationLink($user));
+            dispatch(new UserActivationLink($user));
 
-        return $this->setResponse(__('messages.auth.created'));
+            return $this->setResponse(__('messages.auth.created'));
+        } 
+
+        return $this->setResponse(__('messages.auth.not_owner_permission'), 403);
     }
 
     public function logout(Request $request)

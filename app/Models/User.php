@@ -45,7 +45,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      * @var array<string, string>
      */
     protected $casts = [
-        'active' => 'boolean'
+        'active' => 'boolean',
+        'is_owner' => 'boolean'
     ];
 
     /**
@@ -61,6 +62,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function isWaitingForActivation(): bool
     {
         return !$this->active && !$this->activated_at;
+    }
+
+    // determine if the user is waiting to activate its account
+    public function isOwner(): bool
+    {
+        return $this->is_owner;
     }
 
     /**
@@ -105,7 +112,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
 
-        $url = env('VITE_FRONT_END_URL') . '/reset-password/' . $token;
+        $url = env('VITE_FRONT_END_URL') . '/login/reset-password/' . $token;
 
         $this->notify(new UserRecoverPasswordLink($url));
     }

@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CellphoneController;
+use App\Http\Controllers\Products\AcessoryController;
+use App\Http\Controllers\Products\CellphoneController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,14 +31,10 @@ Route::prefix('/user')->group(function () {
 
 Route::prefix('/auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register'])->middleware('jwt.verify');
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.verify');
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
-// Route::middleware('jwt.verify')->group(function () {
-//     Route::prefix('cellphones')->group(function () {
-//         Route::get('/', [CellphoneController::class, 'index']);
-//         Route::post('/create', [CellphoneController::class, 'store']);
-//     });
-// });
+Route::middleware('jwt.verify')->group(function () {
+});
