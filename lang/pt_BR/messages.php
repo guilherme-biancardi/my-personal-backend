@@ -23,4 +23,13 @@ return [
         'already_active' => 'Este usuário já está ativo',
         'link_sent' => 'Verifique sua caixa de e-mail'
     ],
+
+    'seller' => [
+        'created' => ':name foi cadastrado como vendedor com sucesso!',
+        'deleted' => 'Vendedor removido com sucesso',
+        'restored' => 'Vendedor restaurado com sucesso!', 
+        'edited' => 'Vendedor alterado com sucesso!',
+        'not_found_on_delete' => 'Vendedor removido ou não existente',
+        'not_found_on_restore' => 'Vendedor ativo ou não existente'
+    ]
 ];

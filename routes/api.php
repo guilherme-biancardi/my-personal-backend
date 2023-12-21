@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Products\AcessoryController;
 use App\Http\Controllers\Products\CellphoneController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,4 +38,11 @@ Route::prefix('/auth')->group(function () {
 });
 
 Route::middleware('jwt.verify')->group(function () {
+    Route::prefix('/sellers')->group(function () {
+        Route::get('/', [SellerController::class, 'index']);
+        Route::post('/create', [SellerController::class, 'store']);
+        Route::delete('/delete', [SellerController::class, 'remove']);
+        Route::post('/restore', [SellerController::class, 'restore']);
+        Route::patch('/edit', [SellerController::class, 'update']);
+    });
 });
