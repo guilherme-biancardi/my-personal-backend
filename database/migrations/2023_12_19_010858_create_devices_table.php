@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\DeviceModel;
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,11 +16,14 @@ return new class extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('model');
-            $table->string('brand');
             $table->enum('storage_measure', ['GB', 'TB']);
             $table->integer('storage');
             $table->integer('quantity')->default(0);
+            $table->foreignIdFor(DeviceModel::class);
+            $table->foreignIdFor(Product::class);
+
+            $table->foreign('device_model_id')->references('id')->on('device_models');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

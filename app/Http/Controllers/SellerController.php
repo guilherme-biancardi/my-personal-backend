@@ -34,7 +34,7 @@ class SellerController extends Controller
             return $this->setResponse(__('messages.seller.deleted'));
         }
 
-        return $this->setResponse(__('messages.seller.not_found_on_delete'));
+        return $this->setResponse(__('messages.seller.not_found_on_delete'), 400);
     }
 
     public function restore(Request $request)
@@ -46,7 +46,7 @@ class SellerController extends Controller
             return $this->setResponse(__('messages.seller.restored'));
         }
 
-        return $this->setResponse(__('messages.seller.not_found_on_restore'));
+        return $this->setResponse(__('messages.seller.not_found_on_restore'), 400);
     }
 
     public function update(EditSellerRequest $request)
@@ -61,6 +61,6 @@ class SellerController extends Controller
             return $this->setResponse(__('messages.seller.edited'));
         }
 
-        return $this->setResponse(__('messages.seller.not_found_on_delete'));
+        return $this->setResponse(__('messages.seller.not_found_on_delete'), 400);
     }
 }

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Seller;
+namespace App\Http\Requests\Device;
 
 use App\Traits\BaseRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EditSellerRequest extends FormRequest
+class CreateDeviceRequest extends FormRequest
 {
 
     use BaseRequestTrait;
-
-     /**
+    
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -26,9 +26,9 @@ class EditSellerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:25',
-            'phone_number' => 'celular_com_ddd',
-            'cpf' => 'formato_cpf|unique:sellers'
+            'storage_measure' => 'required|in:GB,TB',
+            'storage' => 'required|integer|min:1',
+            'quantity' => 'integer|min:0'
         ];
     }
 }
