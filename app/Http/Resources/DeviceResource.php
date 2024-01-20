@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\DeviceModel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class DeviceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +17,10 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'isOwner' => $this->is_owner
+            'storage' => $this->storage,
+            'storageMeasure' => $this->storage_measure,
+            'quantity' => $this->quantity,
+            'deviceModel' => new DeviceModelResource($this->model)
         ];
     }
 }

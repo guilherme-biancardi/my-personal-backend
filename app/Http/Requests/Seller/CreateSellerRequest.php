@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Seller;
 
 use App\Traits\BaseRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class CreateSellerRequest extends FormRequest
 {
 
     use BaseRequestTrait;
     
-    /**
+     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -26,8 +26,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+            'name' => 'required|string|max:25',
+            'phone_number' => 'required|celular_com_ddd',
+            'cpf' => 'required|formato_cpf|unique:sellers'
         ];
     }
 }

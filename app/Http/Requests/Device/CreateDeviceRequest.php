@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Device;
 
 use App\Traits\BaseRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class CreateDeviceRequest extends FormRequest
 {
 
     use BaseRequestTrait;
@@ -26,8 +26,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+            'storage_measure' => 'required|in:GB,TB',
+            'storage' => 'required|integer|min:1',
+            'quantity' => 'integer|min:0'
         ];
     }
 }

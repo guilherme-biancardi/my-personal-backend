@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\DeviceModel;
 
 use App\Traits\BaseRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class CreateDeviceModelRequest extends FormRequest
 {
 
     use BaseRequestTrait;
-    
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -26,8 +26,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+            'model' => 'required|string|unique:device_models',
+            'brand' => 'required|string'
         ];
     }
 }

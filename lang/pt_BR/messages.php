@@ -23,4 +23,30 @@ return [
         'already_active' => 'Este usuário já está ativo',
         'link_sent' => 'Verifique sua caixa de e-mail'
     ],
+
+    'seller' => [
+        'created' => ':name foi cadastrado como vendedor com sucesso!',
+        'deleted' => 'Vendedor removido com sucesso',
+        'restored' => 'Vendedor restaurado com sucesso!', 
+        'edited' => 'Vendedor alterado com sucesso!',
+        'not_found_on_delete' => 'Vendedor removido ou não existente',
+        'not_found_on_restore' => 'Vendedor ativo ou não existente'
+    ],
+
+    'device_model' => [
+        'created' => ':model foi cadastrado com sucesso!',
+        'deleted' => 'Modelo removido com sucesso',
+        'contains_devices' => 'o modelo possui dispositivos cadastrados',
+        'devices_deleted' => 'todos os dispositivos deste modelo foram removidos',
+        'device_deleted' => 'Dispositivo foi removido deste modelo',
+        'not_found_on_delete' => 'Modelo removido ou não existente',
+    ],
+
+    'device' => [
+        'created' => 'Dispositivo cadastrado com sucesso!',
+        'updated' => 'Dispositivo alterado com sucesso!',
+        'deleted' => 'Dispositivo removido com sucesso!',
+        'not_found' => 'Dispositivo não encontrado',
+        'exists' => 'Dispositivo já cadastrado'
+    ]
 ];
