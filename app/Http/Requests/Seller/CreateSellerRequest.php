@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests\Seller;
 
-use Illuminate\Contracts\Validation\Validator;
+use App\Traits\BaseRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CreateSellerRequest extends FormRequest
 {
+
+    use BaseRequestTrait;
+    
      /**
      * Determine if the user is authorized to make this request.
      */
@@ -28,11 +30,5 @@ class CreateSellerRequest extends FormRequest
             'phone_number' => 'required|celular_com_ddd',
             'cpf' => 'required|formato_cpf|unique:sellers'
         ];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        //write your bussiness logic here otherwise it will give same old JSON response
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }

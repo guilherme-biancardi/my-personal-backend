@@ -2,12 +2,14 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Contracts\Validation\Validator;
+use App\Traits\BaseRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RegisterRequest extends FormRequest
 {
+
+    use BaseRequestTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -28,11 +30,5 @@ class RegisterRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        //write your bussiness logic here otherwise it will give same old JSON response
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }
