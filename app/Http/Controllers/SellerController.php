@@ -4,17 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Seller\CreateSellerRequest;
 use App\Http\Requests\Seller\EditSellerRequest;
-use App\Http\Resources\SellerCollection;
 use App\Http\Resources\SellerResource;
 use App\Models\Seller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SellerController extends Controller
 {
     public function index(Request $request)
     {
-        $sellers = Seller::all();
-        return $this->setResponseWithResource(new SellerCollection($sellers));
+        $search = $request->input('search');
+
+        if (Auth::user()->isOwner()) {
+            $seller = Seller::withTrashed();
+        } else {
+            $seller = Seller::whereNull('deleted_at');
+        }
+
+        $sellers = $seller->where('name', 'LIKE', "%$search%")
+            ->orWhere('phone_number', 'LIKE', "%$search%")
+            ->orWhere('cpf', 'LIKE', "%$search%")
+            ->get();
+        return $this->setResponseWithResource(SellerResource::collection($sellers));
     }
 
     public function store(CreateSellerRequest $request)
@@ -26,10 +37,14 @@ class SellerController extends Controller
 
     public function remove(Request $request)
     {
-        $seller = Seller::withoutTrashed()->find($request->input('id'));
+        $seller = Seller::withTrashed()->find($request->input('id'));
 
         if ($seller) {
-            $seller->delete();
+            if ($request->input('forever')) {
+                $seller->forceDelete();
+            } else {
+                $seller->delete();
+            }
 
             return $this->setResponse(__('messages.seller.deleted'));
         }
@@ -41,7 +56,7 @@ class SellerController extends Controller
     {
         $seller = Seller::withTrashed()->find($request->input('id'));
 
-        if($seller){
+        if ($seller) {
             $seller->restore();
             return $this->setResponse(__('messages.seller.restored'));
         }

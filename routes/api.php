@@ -40,10 +40,10 @@ Route::prefix('/auth')->group(function () {
 Route::middleware('jwt.verify')->group(function () {
     Route::prefix('/sellers')->group(function () {
         Route::get('/', [SellerController::class, 'index']);
-        Route::post('/create', [SellerController::class, 'store']);
-        Route::delete('/delete', [SellerController::class, 'remove']);
-        Route::post('/restore', [SellerController::class, 'restore']);
-        Route::patch('/edit', [SellerController::class, 'update']);
+        Route::post('/create', [SellerController::class, 'store'])->middleware('user.owner');
+        Route::delete('/delete', [SellerController::class, 'remove'])->middleware('user.owner');
+        Route::post('/restore', [SellerController::class, 'restore'])->middleware('user.owner');
+        Route::patch('/edit', [SellerController::class, 'update'])->middleware('user.owner');
     });
 
     Route::prefix('/device-models')->group(function () {

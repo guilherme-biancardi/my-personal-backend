@@ -19,7 +19,7 @@ class IsOwner
         $user = JWTAuth::parseToken()->authenticate();
 
         if (!$user) {
-            return response()->json(['message' => 'user não encontrado'], 500);
+            return response()->json(['message' => 'usuário não encontrado'], 500);
         }
 
         if($user->IsOwner()){

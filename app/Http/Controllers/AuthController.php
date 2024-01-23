@@ -37,18 +37,14 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        if (Auth::user()->isOwner()) {
-            $userRequest = $request->validated();
-            $userRequest['remember_token'] = Str::random(60);
+        $userRequest = $request->validated();
+        $userRequest['remember_token'] = Str::random(60);
 
-            $user = User::create($userRequest);
+        $user = User::create($userRequest);
 
-            dispatch(new UserActivationLink($user));
+        dispatch(new UserActivationLink($user));
 
-            return $this->setResponse(__('messages.auth.created'));
-        } 
-
-        return $this->setResponse(__('messages.auth.not_owner_permission'), 403);
+        return $this->setResponse(__('messages.auth.created'));
     }
 
     public function logout(Request $request)

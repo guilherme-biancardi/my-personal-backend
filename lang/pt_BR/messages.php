@@ -30,7 +30,9 @@ return [
         'restored' => 'Vendedor restaurado com sucesso!', 
         'edited' => 'Vendedor alterado com sucesso!',
         'not_found_on_delete' => 'Vendedor removido ou não existente',
-        'not_found_on_restore' => 'Vendedor ativo ou não existente'
+        'not_found_on_restore' => 'Vendedor ativo ou não existente',
+        'phone_invalid' => 'Celular com formato inválido',
+        'cpf_exists' => 'CPF já cadastrado'
     ],
 
     'device_model' => [
