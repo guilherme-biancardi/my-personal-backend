@@ -20,4 +20,10 @@ class Seller extends Model
         'phone_number',
         'cpf'
     ];
+
+    // determine if the user is waiting to activate its account
+    public function isActive(): bool
+    {
+        return !boolval($this->deleted_at);
+    }
 }

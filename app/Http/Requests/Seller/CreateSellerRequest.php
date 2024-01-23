@@ -9,8 +9,8 @@ class CreateSellerRequest extends FormRequest
 {
 
     use BaseRequestTrait;
-    
-     /**
+
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -26,9 +26,21 @@ class CreateSellerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:25',
-            'phone_number' => 'required|celular_com_ddd',
-            'cpf' => 'required|formato_cpf|unique:sellers'
+            'name' => 'bail|required|string|max:25',
+            'phone_number' => 'bail|required|celular_com_ddd',
+            'cpf' => 'bail|required|formato_cpf|unique:sellers'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'phone_number' => [
+                'celular_com_ddd' => __('messages.seller.phone_invalid')
+            ],
+            'cpf' => [
+                'unique' => __('messages.seller.cpf_exists')
+            ]
         ];
     }
 }
