@@ -38,25 +38,4 @@ Route::prefix('/auth')->group(function () {
 });
 
 Route::middleware('jwt.verify')->group(function () {
-    Route::prefix('/sellers')->group(function () {
-        Route::get('/', [SellerController::class, 'index']);
-        Route::post('/create', [SellerController::class, 'store'])->middleware('user.owner');
-        Route::delete('/delete', [SellerController::class, 'remove'])->middleware('user.owner');
-        Route::post('/restore', [SellerController::class, 'restore'])->middleware('user.owner');
-        Route::patch('/edit', [SellerController::class, 'update'])->middleware('user.owner');
-    });
-
-    Route::prefix('/device-models')->group(function () {
-        Route::get('/', [DeviceModelController::class, 'index']);
-        Route::post('/create', [DeviceModelController::class, 'store']);
-        Route::delete('/delete', [DeviceModelController::class, 'remove']);
-        Route::delete('/devices/delete', [DeviceModelController::class, 'removeDevices']);
-    });
-
-    Route::prefix('/devices')->group(function () {
-        Route::get('/', [DeviceController::class, 'index']);
-        Route::post('/create', [DeviceController::class, 'store']);
-        Route::patch('/edit', [DeviceController::class, 'update']);
-        Route::delete('/delete', [DeviceController::class, 'remove']);
-    });
 });
