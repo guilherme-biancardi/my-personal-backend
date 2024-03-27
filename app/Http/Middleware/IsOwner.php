@@ -19,13 +19,13 @@ class IsOwner
         $user = JWTAuth::parseToken()->authenticate();
 
         if (!$user) {
-            return response()->json(['message' => 'usuário não encontrado'], 500);
+            return response()->json(['message' => __('messages.user.not_found')], 500);
         }
 
         if($user->IsOwner()){
             return $next($request);
         }
 
-        return response()->json(['message' => 'você não possui permissão para acessar este recurso'], 403);
+        return response()->json(['message' => __('messages.user.forbidden_access')], 403);
     }
 }

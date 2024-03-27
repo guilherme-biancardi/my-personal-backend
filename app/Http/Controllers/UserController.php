@@ -67,8 +67,7 @@ class UserController extends Controller
             return $th->validator->errors();
         }
 
-        if ($response == Password::RESET_LINK_SENT) return $this->setResponse(__('messages.user.link_sent'));
-        if ($response === Password::INVALID_USER) return $this->setResponse(__('messages.auth.not_authorized'), 403);
+        if ($response == Password::RESET_LINK_SENT || $response == Password::INVALID_USER) return $this->setResponse(__('messages.user.link_sent'));
 
         return $this->setResponse($response, 400);
     }

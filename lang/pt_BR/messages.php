@@ -3,6 +3,10 @@
 // lang/pt_BR/messages.php
 
 return [
+    'token' => [
+        'invalid' => 'Token inválido'
+    ],
+
     'auth' => [
         'not_credentials' => 'E-mail e/ou senha inválidos',
         'not_authorized' => 'Usuário não autorizado',
@@ -21,6 +25,8 @@ return [
         'link_expired' => 'Este link de ativação expirou',
         'activated_sucess' => 'Usuário ativado com sucesso!',
         'already_active' => 'Este usuário já está ativo',
-        'link_sent' => 'Verifique sua caixa de e-mail'
+        'link_sent' => 'Verifique sua caixa de e-mail',
+        'not_found' => 'Usuário não encontrado',
+        'forbidden_access' => 'Você não possui permissão para acessar este recurso'
     ]
 ];
