@@ -10,6 +10,8 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -66,8 +68,8 @@ class AuthController extends Controller
         }
 
         $status = Password::reset(
-            $reset = $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) use ($reset) {
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
                 $user->fill([
                     'password' => $password
                 ])->setRememberToken(Str::random(60));
