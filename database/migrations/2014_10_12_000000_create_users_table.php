@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('activated_at')->nullable();
+            $table->timestamp('password_changed_at')->nullable();
             $table->boolean('active')->default(true);
             $table->boolean('is_owner')->default(false);
             $table->string('password');
