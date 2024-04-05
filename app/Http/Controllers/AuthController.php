@@ -79,7 +79,7 @@ class AuthController extends Controller
         );
 
         return $status == Password::PASSWORD_RESET
-            ? $this->setResponse(__('messages.auth.reset_password.success'))
-            : $this->setResponse(__('messages.auth.reset_password.failure'), 400);
+            ? $this->setResponse(__('messages.user.password.success'))
+            : $this->setResponse(__('messages.user.password.failure'), 400);
     }
 }

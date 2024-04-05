@@ -56,6 +56,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     protected $dates = [
         'activated_at',
+        'password_changed_at'
     ];
 
     // determine if the user is waiting to activate its account
@@ -69,6 +70,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return $this->is_owner;
     }
+
+     // determine if the user is waiting to activate its account
+     public function isFirstAccess(): bool
+     {
+         return $this->password_changed_at === null;
+     }
 
     /**
      * Activate the user.
@@ -102,6 +109,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function changePassword($password){
+        $this->password = $password;
+        $this->password_changed_at = now();
+        $this->save();
     }
 
     public function setPasswordAttribute($value)

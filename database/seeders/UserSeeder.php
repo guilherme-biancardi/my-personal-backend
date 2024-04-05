@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,8 @@ class UserSeeder extends Seeder
             'email' => env('VITE_DEFAULT_USER_EMAIL'),
             'password' => Hash::make(env('VITE_DEFAULT_USER_PASSWORD')),
             'active' => true,
-            'is_owner' => true
+            'is_owner' => true,
+            'password_changed_at' => Carbon::now()
         ]);
     }
 }

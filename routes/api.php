@@ -27,7 +27,8 @@ Route::prefix('/user')->group(function () {
     Route::get('/activate/{hash}', [UserController::class, 'activate'])->name('user.activate');
     Route::post('/send-activation-link', [UserController::class, 'sendActivationLink']);
     Route::post('/forgot-password', [UserController::class, 'forgotPassword']);
-    Route::get('/me', [UserController::class, 'me'])->middleware('jwt.verify');
+    Route::get('/me', [UserController::class, 'me'])->middleware(['jwt.verify', 'user.firstAccess']);
+    Route::patch('/change-password', [UserController::class, 'changePassword'])->middleware('jwt.verify');
 });
 
 Route::prefix('/auth')->group(function () {
@@ -37,5 +38,5 @@ Route::prefix('/auth')->group(function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
-Route::middleware('jwt.verify')->group(function () {
+Route::middleware(['jwt.verify', 'user.firstAccess'])->group(function () {
 });
