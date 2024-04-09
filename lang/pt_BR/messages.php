@@ -29,6 +29,10 @@ return [
             'failure' => 'Não foi possível alterar sua senha',
             'equals' => 'Sua nova senha não pode ser igual a atual',
             'current_fail' => 'A senha atual informada está incorreta'
+        ],
+        'photo' => [
+            'success' =>  'Foto salva com sucesso!',
+            'failure' => 'Não foi possivel salvar sua foto'
         ]
     ]
 ];
