@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('activated_at')->nullable();
-            $table->timestamp('password_changed_at')->nullable();
+            $table->string('password');
+            $table->string('image')->nullable();
+            $table->string('cpf', 14)->unique();
+
             $table->boolean('active')->default(true);
             $table->boolean('is_owner')->default(false);
-            $table->string('password');
+
+            $table->timestamp('activated_at')->nullable();
+            $table->timestamp('password_changed_at')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

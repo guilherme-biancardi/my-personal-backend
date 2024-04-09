@@ -26,9 +26,9 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'cpf' => 'required|string|cpf|formato_cpf',
             'name' => 'required|string|max:25',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
         ];
     }
 }
