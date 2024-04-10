@@ -29,7 +29,6 @@ class AuthController extends Controller
 
         if (Auth::user()->isWaitingForActivation()) {
             Auth::logout();
-
             return $this->setResponse(__('messages.auth.not_activated'), 500);
         }
 
