@@ -40,6 +40,9 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $userRequest = $request->validated();
+        $cpfOnlyNumbers = preg_replace('/[\.-]/', '', $userRequest['cpf']);
+
+        $userRequest['password'] = substr($cpfOnlyNumbers, 0, 6);
         $userRequest['remember_token'] = Str::random(60);
 
         $user = User::create($userRequest);

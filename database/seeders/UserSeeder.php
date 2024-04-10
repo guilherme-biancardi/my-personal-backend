@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => env('VITE_DEFAULT_USER_NAME'),
             'email' => env('VITE_DEFAULT_USER_EMAIL'),
+            'cpf' => env('VITE_DEFAULT_USER_CPF'),
             'password' => Hash::make(env('VITE_DEFAULT_USER_PASSWORD')),
             'active' => true,
             'is_owner' => true,

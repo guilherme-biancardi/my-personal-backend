@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use RuntimeException;
 
@@ -28,6 +29,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'email',
         'password',
         'remember_token',
+        'image'
     ];
 
     /**
@@ -71,11 +73,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->is_owner;
     }
 
-     // determine if the user is waiting to activate its account
-     public function isFirstAccess(): bool
-     {
-         return $this->password_changed_at === null;
-     }
+    // determine if the user is waiting to activate its account
+    public function isFirstAccess(): bool
+    {
+        return $this->password_changed_at === null;
+    }
 
     /**
      * Activate the user.
@@ -89,6 +91,21 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         $this->active = true;
         $this->activated_at = now();
         $this->save();
+    }
+
+    public function getPhotoBase64()
+    {
+        if ($this->image && Storage::exists($this->image)) {
+            $photoContent = Storage::get($this->image);
+            $mimeType = Storage::mimeType($this->image);
+
+            $base64code = 'data:' . $mimeType . ';base64,';
+            $photo_base64 = base64_encode($photoContent);
+
+            return $base64code . $photo_base64;
+        }
+
+        return null;
     }
 
     /**
@@ -111,7 +128,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return [];
     }
 
-    public function changePassword($password){
+    public function changePassword($password)
+    {
         $this->password = $password;
         $this->password_changed_at = now();
         $this->save();

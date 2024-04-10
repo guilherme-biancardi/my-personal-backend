@@ -64,5 +64,11 @@ php artisan key:generate
 ```
 
 
+Gere o link do storage do projeto Laravel
+```sh
+php artisan storage:link
+```
+
+
 Acesse o projeto
 [http://localhost:8989](http://localhost:8989)

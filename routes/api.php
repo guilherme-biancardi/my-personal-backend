@@ -29,6 +29,7 @@ Route::prefix('/user')->group(function () {
     Route::post('/forgot-password', [UserController::class, 'forgotPassword']);
     Route::get('/me', [UserController::class, 'me'])->middleware(['jwt.verify', 'user.firstAccess']);
     Route::patch('/change-password', [UserController::class, 'changePassword'])->middleware('jwt.verify');
+    Route::post('/upload-photo', [UserController::class, 'uploadPhoto'])->middleware('jwt.verify');
 });
 
 Route::prefix('/auth')->group(function () {
