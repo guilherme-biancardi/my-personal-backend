@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\User;
 
 use App\Traits\BaseRequestTrait;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class UploadPhotoRequest extends FormRequest
 {
-
     use BaseRequestTrait;
-    
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -18,8 +17,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:6',
+            'image' => 'bail|required|image|dimensions:max_width=256,max_height=256'
         ];
     }
 }

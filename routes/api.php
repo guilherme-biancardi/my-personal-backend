@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DeviceController;
-use App\Http\Controllers\DeviceModelController;
-use App\Http\Controllers\SellerController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,10 +32,13 @@ Route::prefix('/user')->group(function () {
 
 Route::prefix('/auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register'])->middleware(['jwt.verify', 'user.owner']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.verify');
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
 
 Route::middleware(['jwt.verify', 'user.firstAccess'])->group(function () {
+    Route::prefix('/clients')->group(function () {
+        Route::get('/', [ClientController::class, 'index'])->middleware('user.owner');
+        Route::post('/create', [ClientController::class, 'register'])->middleware('user.owner');
+    });
 });

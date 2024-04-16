@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,9 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('image')->nullable();
             $table->string('cpf', 14)->unique();
-
-            $table->boolean('active')->default(true);
-            $table->boolean('is_owner')->default(false);
+            $table->enum('type', UserType::values());
+            
+            $table->boolean('active')->default(false);
 
             $table->timestamp('activated_at')->nullable();
             $table->timestamp('password_changed_at')->nullable();

@@ -10,11 +10,9 @@ return [
     'auth' => [
         'not_credentials' => 'E-mail e/ou senha inválidos',
         'not_authorized' => 'Usuário não autorizado',
-        'not_activated' => 'Usuário não ativado, fale com seu administrador e tente novamente',
+        'not_activated' => 'Usuário não ativado',
         'logged_in' => 'Usuário logado com sucesso!',
         'logged_out' => 'Usuário deslogado com sucesso!',
-        'created' => 'Usuário criado com sucesso!',
-        'not_owner_permission' => 'Você não tem permissão para criar outros usuários',
     ],
 
     'user' => [
@@ -34,5 +32,9 @@ return [
             'success' =>  'Foto salva com sucesso!',
             'failure' => 'Não foi possivel salvar sua foto'
         ]
+    ],
+
+    'client' => [
+        'created' => 'Cliente adicionado com sucesso!',
     ]
 ];

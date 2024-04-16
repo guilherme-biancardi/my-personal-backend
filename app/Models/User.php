@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\UserType;
 use App\Notifications\UserRecoverPasswordLink;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,7 +30,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'email',
         'password',
         'remember_token',
-        'image'
+        'image',
+        'cpf',
+        'type'
     ];
 
     /**
@@ -48,7 +51,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     protected $casts = [
         'active' => 'boolean',
-        'is_owner' => 'boolean'
     ];
 
     /**
@@ -70,7 +72,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     // determine if the user is waiting to activate its account
     public function isOwner(): bool
     {
-        return $this->is_owner;
+        return $this->type === UserType::OWNER->value;
     }
 
     // determine if the user is waiting to activate its account
@@ -85,24 +87,15 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function activate()
     {
-        // let's validate the user we are actvating. Just check for safety.
-        throw_if($this->active, RuntimeException::class, 'The user is already active');
-
         $this->active = true;
         $this->activated_at = now();
         $this->save();
     }
 
-    public function getPhotoBase64()
+    public function getPhoto() : string | null
     {
         if ($this->image && Storage::exists($this->image)) {
-            $photoContent = Storage::get($this->image);
-            $mimeType = Storage::mimeType($this->image);
-
-            $base64code = 'data:' . $mimeType . ';base64,';
-            $photo_base64 = base64_encode($photoContent);
-
-            return $base64code . $photo_base64;
+            return Storage::url($this->image);
         }
 
         return null;

@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Enums\UserType;
 
 class UserSeeder extends Seeder
 {
@@ -21,7 +22,8 @@ class UserSeeder extends Seeder
             'cpf' => env('VITE_DEFAULT_USER_CPF'),
             'password' => Hash::make(env('VITE_DEFAULT_USER_PASSWORD')),
             'active' => true,
-            'is_owner' => true,
+            'type' => UserType::OWNER,
+            'image' => 'static/default.jpg',
             'password_changed_at' => Carbon::now()
         ]);
     }

@@ -3,15 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
-use App\Jobs\UserActivationLink;
-use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -29,26 +24,11 @@ class AuthController extends Controller
 
         if (Auth::user()->isWaitingForActivation()) {
             Auth::logout();
-            return $this->setResponse(__('messages.auth.not_activated'), 500);
+            return $this->setResponse(__('messages.auth.not_activated'), 403);
         }
 
         $resource = new JsonResource(['token' => $token]);
         return $this->setResponseWithResource($resource, __('messages.auth.logged_in'));
-    }
-
-    public function register(RegisterRequest $request)
-    {
-        $userRequest = $request->validated();
-        $cpfOnlyNumbers = preg_replace('/[\.-]/', '', $userRequest['cpf']);
-
-        $userRequest['password'] = substr($cpfOnlyNumbers, 0, 6);
-        $userRequest['remember_token'] = Str::random(60);
-
-        $user = User::create($userRequest);
-
-        dispatch(new UserActivationLink($user));
-
-        return $this->setResponse(__('messages.auth.created'));
     }
 
     public function logout(Request $request)

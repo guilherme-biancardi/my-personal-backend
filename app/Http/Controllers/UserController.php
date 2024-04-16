@@ -3,22 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\ChangePasswordRequest;
+use App\Http\Requests\User\UploadPhotoRequest;
 use App\Http\Resources\User\UserResource;
-use App\Jobs\UserActivationLink;
 use App\Models\User;
+use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
 
-    public function me(Request $request)
+    public function me()
     {
         $user = Auth::user();
         return $this->setResponseWithResource(new UserResource($user));
@@ -27,10 +25,9 @@ class UserController extends Controller
     public function activate($hash)
     {
         $user = User::where('remember_token', $hash)->firstOrFail();
+        $userService = new UserService($user);
 
-        abort_unless($user->isWaitingForActivation(), 403, __('messages.user.link_expired'));
-
-        $user->activate();
+        $userService->activate();
 
         return response(__('messages.user.activated_sucess'));
     }
@@ -54,7 +51,9 @@ class UserController extends Controller
                 return $this->setResponse(__('messages.user.already_active'), 403);
             }
 
-            dispatch(new UserActivationLink($user));
+            $userService = new UserService($user);
+            $userService->sendActivationLink();
+
             return $this->setResponse(__('messages.user.link_sent'));
         } catch (Exception $e) {
             return $this->setResponse(__('messages.user.link_sent'));
@@ -78,48 +77,28 @@ class UserController extends Controller
 
     public function changePassword(ChangePasswordRequest $request)
     {
-        $user = Auth::user();
         $validated = $request->validated();
 
-        if (!Hash::check($validated['current_password'], $user->getAuthPassword())) {
-            return $this->setResponse(__('messages.user.password.current_fail'), 400);
+        $user = Auth::user();
+        $userService = new UserService($user);
+
+        try {
+            $userService->updatePassword($validated['current_password'], $validated['password']);
+
+            return $this->setResponse(__('messages.user.password.success'));
+        } catch (Exception $err) {
+            return $this->setResponse($err->getMessage(), 400);
         }
-
-        if ($validated['password'] === $validated['current_password']) {
-            return $this->setResponse(__('messages.user.password.equals'), 400);
-        }
-
-        $user->changePassword($validated['password']);
-
-        return $this->setResponse(__('messages.user.password.success'));
     }
 
-    public function uploadPhoto(Request $request)
+    public function uploadPhoto(UploadPhotoRequest $request)
     {
-        try {
-            $request->validate([
-                'image' => 'bail|required|image|dimensions:max_width=1024,max_height=1024'
-            ]);
-        } catch (ValidationException $th) {
-            $messages = $th->validator->errors()->getMessages();
-            return $this->setResponse($messages['image'][0], 400);
-        }
-
         $user = Auth::user();
         $image = $request->file('image');
 
         if ($image) {
-            if ($user->image && Storage::exists($user->image)) {
-                Storage::delete($user->image);
-            }
-
-            $path = $image->store('users');
-
-            $user->update([
-                'image' => $path
-            ]);
-
-            $user->save();
+            $userService = new UserService($user);
+            $userService->uploadPhoto($image);
 
             return $this->setResponseWithResource(new UserResource($user), __('messages.user.photo.success'));
         }
